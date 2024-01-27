@@ -9,7 +9,7 @@ fn main() {
         .with_max_level(tracing::Level::DEBUG)
         .init();
 
-    let event_loop = EventLoop::new().unwrap();
+    let event_loop = EventLoop::new();
     let window = WindowBuilder::new()
         .with_transparent(true)
         .build(&event_loop)
