@@ -39,8 +39,8 @@ pub async fn run(event_loop: EventLoop<()>, window: Window) {
         push_constant_ranges: &[],
     });
 
-    let swapchain_capabilities = surface.get_capabilities(&adapter);
-    let swapchain_format = swapchain_capabilities.formats[0];
+    let surface_capabilities = surface.get_capabilities(&adapter);
+    let surface_format = surface_capabilities.formats[0];
 
     let render_pipeline = device.create_render_pipeline(&wgpu::RenderPipelineDescriptor {
         label: None,
@@ -53,11 +53,7 @@ pub async fn run(event_loop: EventLoop<()>, window: Window) {
         fragment: Some(wgpu::FragmentState {
             module: &shader,
             entry_point: "fs_main",
-            targets: &[Some(wgpu::ColorTargetState {
-                format: swapchain_format,
-                blend: Some(wgpu::BlendState::ALPHA_BLENDING),
-                write_mask: wgpu::ColorWrites::ALL,
-            })],
+            targets: &[Some(surface_format.into())],
         }),
         primitive: wgpu::PrimitiveState::default(),
         depth_stencil: None,
@@ -65,12 +61,14 @@ pub async fn run(event_loop: EventLoop<()>, window: Window) {
         multiview: None,
     });
 
-    let default_surface_config = surface
-        .get_default_config(&adapter, size.width, size.height)
-        .unwrap();
     let mut surface_config = wgpu::SurfaceConfiguration {
-        alpha_mode: wgpu::CompositeAlphaMode::Auto,
-        ..default_surface_config
+        usage: wgpu::TextureUsages::RENDER_ATTACHMENT,
+        format: surface_format,
+        width: size.width,
+        height: size.height,
+        present_mode: surface_capabilities.present_modes[0],
+        alpha_mode: surface_capabilities.alpha_modes[0],
+        view_formats: vec![],
     };
 
     surface.configure(&device, &surface_config);
