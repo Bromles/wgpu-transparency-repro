@@ -69,7 +69,7 @@ pub async fn run(event_loop: EventLoop<()>, window: Window) {
         .get_default_config(&adapter, size.width, size.height)
         .unwrap();
     let mut surface_config = wgpu::SurfaceConfiguration {
-        alpha_mode: wgpu::CompositeAlphaMode::Opaque,
+        alpha_mode: wgpu::CompositeAlphaMode::Auto,
         ..default_surface_config
     };
 
