@@ -1,6 +1,6 @@
+use app::App;
 use tokio::runtime::Builder;
 use winit::event_loop::EventLoop;
-use winit::window::WindowBuilder;
 
 mod app;
 
@@ -10,11 +10,16 @@ fn main() {
         .init();
 
     let event_loop = EventLoop::new().unwrap();
-    let window = WindowBuilder::new()
-        .with_transparent(true)
-        .build(&event_loop)
-        .unwrap();
     let rt = Builder::new_current_thread().build().unwrap();
+    let mut app = App {
+        window: None,
+        runtime: rt,
+        render_pipeline: None,
+        surface: None,
+        surface_config: None,
+        device: None,
+        queue: None,
+    };
 
-    rt.block_on(app::run(event_loop, window))
+    event_loop.run_app(&mut app).unwrap();
 }
