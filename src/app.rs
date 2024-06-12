@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use tokio::runtime::Runtime;
-use wgpu::{Device, Queue, RenderPipeline, Surface, SurfaceConfiguration};
+use wgpu::{Backends, Device, InstanceDescriptor, Queue, RenderPipeline, Surface, SurfaceConfiguration};
 use winit::application::ApplicationHandler;
 use winit::event::WindowEvent;
 use winit::window::Window;
@@ -26,7 +26,10 @@ impl ApplicationHandler for App {
 
         let size = window.inner_size();
 
-        let instance = wgpu::Instance::default();
+        let instance = wgpu::Instance::new(InstanceDescriptor {
+            backends: Backends::PRIMARY,
+            ..Default::default()
+        });
 
         let surface = instance.create_surface(window.clone()).unwrap();
         let adapter = self
