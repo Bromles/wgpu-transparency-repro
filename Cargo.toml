@@ -6,9 +6,8 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-wgpu = { version = "0.20" }
+wgpu = { version = "27.0" }
 winit = { version = "0.30" }
-bytemuck = { version = "1.13.1", features = ["derive"] }
 tracing = "0.1"
 tracing-subscriber = "0.3"
 tokio = { version = "1.32.0", features = ["rt"] }
